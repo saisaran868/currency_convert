@@ -10,8 +10,10 @@ class MyApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+
     return const MaterialApp(
-      home: CurrencyConverterMaterialpage()
+      debugShowCheckedModeBanner: false,
+      home: CurrencyConverterMaterialPage(),
       
     );
   }

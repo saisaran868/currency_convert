@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class CurrencyConverterMaterialpage extends StatefulWidget {
-  const CurrencyConverterMaterialpage({super.key});
+class CurrencyConverterMaterialPage extends StatefulWidget {
+  const CurrencyConverterMaterialPage({super.key});
 
   @override
-  State<CurrencyConverterMaterialpage> createState() => _CurrencyConverterMaterialpageState();
+  State<CurrencyConverterMaterialPage> createState() => _CurrencyConverterMaterialPageState();
 }
 
-class _CurrencyConverterMaterialpageState extends State<CurrencyConverterMaterialpage> {
+class _CurrencyConverterMaterialPageState extends State<CurrencyConverterMaterialPage> {
   final TextEditingController textEditingControllerUSD = TextEditingController();
   final TextEditingController textEditingControllerINR = TextEditingController();
-
+ final exchangeRate = 83.94;
   void _updateFromUSD(String value) {
     textEditingControllerINR.removeListener(() {});
 
     double input = double.tryParse(value) ?? 0;
-    double result = input * 83.94;
+    double result = input * exchangeRate;
 
     textEditingControllerINR.text = result.toStringAsFixed(2);
 
@@ -26,7 +26,7 @@ class _CurrencyConverterMaterialpageState extends State<CurrencyConverterMateria
     textEditingControllerUSD.removeListener(() {});
 
     double input = double.tryParse(value) ?? 0;
-    double result = input / 83.94;
+    double result = input / exchangeRate;
 
     textEditingControllerUSD.text = result.toStringAsFixed(2);
 
@@ -91,6 +91,7 @@ class _CurrencyConverterMaterialpageState extends State<CurrencyConverterMateria
                 onChanged: _updateFromUSD,
                 style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
+
                   helperText:'USD',
                   helperStyle: const TextStyle(
                     color: Colors.black,
