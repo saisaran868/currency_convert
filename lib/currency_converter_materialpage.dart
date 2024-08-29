@@ -1,103 +1,148 @@
 import 'package:flutter/material.dart';
 
-class CurrencyConverterMaterialpage extends StatefulWidget{
+class CurrencyConverterMaterialpage extends StatefulWidget {
   const CurrencyConverterMaterialpage({super.key});
 
   @override
-  State<CurrencyConverterMaterialpage> 
-  createState() => _CurrencyConverterMaterialpageState();
-
+  State<CurrencyConverterMaterialpage> createState() => _CurrencyConverterMaterialpageState();
 }
 
-class _CurrencyConverterMaterialpageState 
-extends State<CurrencyConverterMaterialpage>{
-double result = 0;
-final TextEditingController textEditingController = TextEditingController();
+class _CurrencyConverterMaterialpageState extends State<CurrencyConverterMaterialpage> {
+  final TextEditingController textEditingControllerUSD = TextEditingController();
+  final TextEditingController textEditingControllerINR = TextEditingController();
+
+  void _updateFromUSD(String value) {
+    textEditingControllerINR.removeListener(() {});
+
+    double input = double.tryParse(value) ?? 0;
+    double result = input * 83.94;
+
+    textEditingControllerINR.text = result.toStringAsFixed(2);
+
+    textEditingControllerINR.addListener(() {});
+  }
+
+  void _updateFromINR(String value) {
+    textEditingControllerUSD.removeListener(() {});
+
+    double input = double.tryParse(value) ?? 0;
+    double result = input / 83.94;
+
+    textEditingControllerUSD.text = result.toStringAsFixed(2);
+
+    textEditingControllerUSD.addListener(() {});
+  }
 
   @override
-  Widget build(Object context) {    
+  Widget build(BuildContext context) {
     final border = OutlineInputBorder(
-                  borderSide:const BorderSide(
-                    color: Colors.black,
-                    width: 3.0,
-                    style: BorderStyle.solid,
-                    ),
-                    borderRadius: BorderRadius.circular(5));
+      borderSide: const BorderSide(
+        color: Colors.black,
+        width: 3.0,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.circular(5),
+    );
 
-    return    Scaffold(
-      backgroundColor: Colors.deepPurpleAccent,
+    return Scaffold(
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Colors.blueGrey,
         elevation: 0,
-        title: const Text('Currency Converter',style:TextStyle(
-          color: Colors.white
-        ),
+        title: const Text(
+          'Currency Converter',
+          style: TextStyle(color: Colors.white),
         ),
       ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-               Padding(
-                 padding: const EdgeInsets.all(8.0),
-                 child: Text("INR: ${ result != 0 ? result.toStringAsFixed(2) : result.toStringAsFixed(0) }",
-                 
-                 style: const TextStyle(
-                 fontSize: 35,
-                 fontWeight: FontWeight.bold,
-                 color: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "USD",
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
+                ),
+                Icon(
+                  Icons.compare_arrows,
+                  size: 35,
+                ),
+                Text(
+                  "IND",
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-               ), 
+                ),
+              ],
+            ),
+            const SizedBox(height: 10,),
             Container(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: textEditingController,
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
+                controller: textEditingControllerUSD,
+                onChanged: _updateFromUSD,
+                style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
+                  helperText:'USD',
+                  helperStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                   hintText: 'Enter a number in USD',
                   hintStyle: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                   ),
-                  prefixIcon: const Icon( Icons.attach_money),
+                  prefixIcon: const Icon(Icons.attach_money),
                   prefixIconColor: Colors.black,
                   filled: true,
-                  fillColor: Colors.black,
+                  fillColor: Colors.white,
                   focusedBorder: border,
                   enabledBorder: border,
-                  ),
-                  keyboardType:const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ) ,
-                  ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextButton(onPressed: (){
-                setState(() {
-                  result = double.parse(textEditingController.text) * 83.94;
-                });
-              },
-              style: TextButton.styleFrom(
-                
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
-                minimumSize:const Size (double.infinity, 50),
-                shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
                 ),
-                
-               child:const Text("Convert" ),
-               ),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              ),
             ),
-             
-            ],
-          ),
-        ) ,  
-      );
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: textEditingControllerINR,
+                onChanged: _updateFromINR,
+                style: const TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  helperText:'IND',
+                  helperStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  hintText: 'Enter a number in INR',
+                  hintStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                  prefixIcon: const Icon(Icons.money),
+                  prefixIconColor: Colors.black,
+                  filled: true,
+                  fillColor: Colors.white,
+                  focusedBorder: border,
+                  enabledBorder: border,
+                ),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
-
 }
