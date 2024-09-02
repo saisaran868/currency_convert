@@ -1,5 +1,7 @@
-import 'package:currency_convert/currency_converter_materialpage.dart';
 import 'package:flutter/material.dart';
+
+import 'main_pages/all_converter_pages.dart';
+
 
 void main(){
   runApp(const MyApp());
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget{
 
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CurrencyConverterMaterialPage(),
+      home: AllConverterPages(),
       
     );
   }
